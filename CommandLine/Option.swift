@@ -218,8 +218,17 @@ public class MultiStringOption: Option {
     if values.count == 0 {
       return false
     }
-    
-    _value = values
+
+    if var value = _value
+    {
+      value += values;
+      _value = value;
+    }
+    else
+    {
+      _value = values
+    }
+
     return true
   }
 }

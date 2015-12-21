@@ -350,7 +350,7 @@ internal class CommandLineTests: XCTestCase {
 
   func testMultiStringOptions() {
     let cli = CommandLine(arguments: [ "CommandLineTests", "-a", "one", "-b", "two", "2wo",
-      "--c1", "three", "--d1", "four", "4our", "-e" ])
+      "--c1", "three", "--d1", "four", "4our", "-e", "-f1", "five1", "five2", "-f1", "five3" ])
 
     /* Short flags */
     let a = MultiStringOption(shortFlag: "a", longFlag: "a1", required: true, helpMessage: "")
@@ -359,8 +359,9 @@ internal class CommandLineTests: XCTestCase {
     /* Long flags */
     let c = MultiStringOption(shortFlag: "c", longFlag: "c1", required: true, helpMessage: "")
     let d = MultiStringOption(shortFlag: "d", longFlag: "d1", required: true, helpMessage: "")
+    let f = MultiStringOption(shortFlag: "f", longFlag: "f1", required: true, helpMessage: "")
 
-    cli.addOptions(a, b, c, d)
+    cli.addOptions(a, b, c, d, f)
 
     do {
       try cli.parse()
@@ -374,6 +375,10 @@ internal class CommandLineTests: XCTestCase {
       XCTAssertEqual(d.value!.count, 2, "Failed to get correct number of values from multi long multistring")
       XCTAssertEqual(d.value![0], "four", "Failed to get correct first value from multi long multistring")
       XCTAssertEqual(d.value![1], "4our", "Failed to get correct second value from multi long multistring")
+      XCTAssertEqual(f.value!.count, 3, "Failed to get correct number of values from multi long multistring")
+      XCTAssertEqual(f.value![0], "five1", "Failed to get correct first value from multi long multistring")
+      XCTAssertEqual(f.value![1], "five2", "Failed to get correct second value from multi long multistring")
+      XCTAssertEqual(f.value![2], "five3", "Failed to get correct second value from multi long multistring")
     } catch {
       XCTFail("Failed to parse multi string options: \(error)")
     }
